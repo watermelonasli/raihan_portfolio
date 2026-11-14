@@ -6,6 +6,9 @@ import BackToTop from "./components/ui/BackToTop";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
+import AdminLayout from './admin/layouts/AdminLayout';
+import AdminLogin from './admin/pages/AdminLogin';
+import Dashboard from './admin/pages/Dashboard';
 
 export default function App() {
   return (
@@ -18,6 +21,10 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogDetail />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+          </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
