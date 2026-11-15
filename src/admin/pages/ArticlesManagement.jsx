@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // 1. PERBAIKAN IMPORT: Gunakan huruf kapital 'S' pada adminService
-import { adminService } from "../../services/adminservice"; 
+import { adminService } from "../../services/adminService"; 
 // 2. IMPORT SUPABASE LANGSUNG untuk bypass error jika ada masalah di adminService
 import { supabase } from "../../lib/supabase"; 
 import FormField from "../components/FormField";

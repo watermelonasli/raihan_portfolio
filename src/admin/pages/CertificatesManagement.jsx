@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { adminService } from '../../services/adminservice';
+import { adminService } from '../../services/adminService';
 import FormField from '../components/FormField';
 import DeleteDialog from '../components/DeleteDialog';
 import { Plus, Edit2, Trash2, Image as ImageIcon } from 'lucide-react';

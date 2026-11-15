@@ -7,7 +7,7 @@ import Experience from "../components/sections/Experience";
 import Certificates from "../components/sections/Certificates";
 import Resume from "../components/sections/Resume";
 import BlogPreview from "../components/sections/BlogPreview";
-import Contact from "../components/sections/contact";
+import Contact from "../components/sections/Contact";
 
 export default function Home() {
   return (
