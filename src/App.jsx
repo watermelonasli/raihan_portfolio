@@ -8,6 +8,7 @@ import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 
 // Admin imports
+import ProtectedRoute from './admin/components/ProtectedRoute';
 import AdminLayout from "./admin/layouts/AdminLayout";
 import AdminLogin from "./admin/pages/AdminLogin";
 import Dashboard from "./admin/pages/Dashboard";
@@ -38,15 +39,19 @@ function AppContent() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogDetail />} />
           
-          {/* Admin Routes */}
+          {/* Admin Login Route (Public) */}
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="skills" element={<SkillsManagement />} />
-            <Route path="projects" element={<ProjectsManagement />} />
-            <Route path="experience" element={<ExperiencesManagement />} />
-            <Route path="certificates" element={<CertificatesManagement />} />
-            <Route path="articles" element={<ArticlesManagement />} />
+          
+          {/* Admin Protected Routes */}
+          <Route path="/admin" element={<ProtectedRoute />}>
+            <Route element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="skills" element={<SkillsManagement />} />
+              <Route path="projects" element={<ProjectsManagement />} />
+              <Route path="experience" element={<ExperiencesManagement />} />
+              <Route path="certificates" element={<CertificatesManagement />} />
+              <Route path="articles" element={<ArticlesManagement />} />
+            </Route>
           </Route>
           
           <Route path="*" element={<Navigate to="/" replace />} />
