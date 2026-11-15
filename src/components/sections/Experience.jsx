@@ -1,11 +1,29 @@
 import { motion } from "motion/react";
 import { Briefcase, Users, Trophy } from "lucide-react";
 import SectionTitle from "../ui/SectionTitle";
-import { experiences } from "../../data/experiences";
+
+// 1. Import the hook and your static data
+import { useSupabaseData } from "../../hooks/useSupabaseData";
+import { experiences as staticExperiences } from "../../data/experiences";
 
 const TYPE_ICONS = { internship: Briefcase, organization: Users, competition: Trophy };
 
 export default function Experience() {
+  // 2. Fetch from DB (passing empty array as fallback since we merge manually)
+  const { data: dbExperiences } = useSupabaseData('experiences', [], { is_visible: true });
+
+  // 3. Merge static and database experiences
+  const allExperiencesMap = new Map();
+  
+  // Add your static ones first
+  staticExperiences.forEach(exp => allExperiencesMap.set(exp.id, exp));
+  
+  // Add the database ones (this will overwrite a static one if they share the exact same ID)
+  dbExperiences.forEach(exp => allExperiencesMap.set(exp.id, exp));
+
+  // Convert back to an array for rendering
+  const combinedExperiences = Array.from(allExperiencesMap.values());
+
   return (
     <section id="experience" className="relative py-24 sm:py-32 bg-surface/30">
       <div className="section-shell">
@@ -13,7 +31,8 @@ export default function Experience() {
 
         <div className="mx-auto max-w-3xl">
           <div className="relative border-l-2 border-line pl-6 sm:pl-10">
-            {experiences.map((exp, i) => {
+            {/* 4. Map over the combined experiences */}
+            {combinedExperiences.map((exp, i) => {
               const Icon = TYPE_ICONS[exp.type] || Briefcase;
               return (
                 <motion.div key={exp.id} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ delay: i * 0.1 }} className="relative mb-12 last:mb-0">
@@ -29,7 +48,7 @@ export default function Experience() {
                     <p className="mb-4 text-sm font-medium text-muted">{exp.organization} · {exp.location}</p>
                     <p className="mb-4 text-sm leading-relaxed text-body">{exp.description}</p>
                     <ul className="space-y-1.5">
-                      {exp.highlights.map((h, idx) => (
+                      {exp.highlights?.map((h, idx) => (
                         <li key={idx} className="flex gap-2 text-sm text-muted">
                           <div className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
                           {h}

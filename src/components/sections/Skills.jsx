@@ -1,22 +1,33 @@
 import { motion } from "motion/react";
 import { CheckCircle2 } from "lucide-react";
 import SectionTitle from "../ui/SectionTitle";
-import { hardSkills, softSkills, tools } from "../../data/skills";
+import { useSupabaseData } from "../../hooks/useSupabaseData";
+import { hardSkills, softSkills } from "../../data/skills"; 
 
 export default function Skills() {
+  // 1. We only pass hardSkills to the hook as the fallback
+  const { data: allSkills } = useSupabaseData('skills', hardSkills, { is_visible: true });
+
+  // 2. We filter the DB results to exclude 'Soft Skills' just in case
+  // so they only show up on the right side using the static data.
+  const safeSkills = allSkills || [];
+  const displayHardSkills = safeSkills.filter(skill => skill.category !== 'Soft Skills');
+
   return (
     <section id="skills" className="relative py-24 sm:py-32 bg-surface/30">
       <div className="section-shell">
         <SectionTitle badge="Skills" title="What I bring to the table" subtitle="The tools and technologies I use to build things, plus the soft skills that keep projects moving." />
 
         <div className="grid gap-12 lg:grid-cols-2">
+          
+          {/* HARD SKILLS SECTION (Dynamic from Supabase) */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-heading">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-soft text-accent">{'</>'}</span>
               Hard Skills
             </h3>
             <div className="space-y-5">
-              {hardSkills.map((skill, i) => (
+              {displayHardSkills.map((skill, i) => (
                 <div key={skill.name}>
                   <div className="mb-1.5 flex items-center justify-between text-sm">
                     <span className="font-medium text-heading">{skill.name}</span>
@@ -30,12 +41,14 @@ export default function Skills() {
             </div>
           </motion.div>
 
+          {/* SOFT SKILLS SECTION (Strictly Static) */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
             <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-heading">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-soft text-accent"><CheckCircle2 size={18} /></span>
               Soft Skills
             </h3>
             <div className="grid gap-3 sm:grid-cols-2">
+              {/* Rendering directly from your static softSkills array */}
               {softSkills.map((skill) => (
                 <div key={skill.name} className="rounded-xl border border-line bg-surface p-4">
                   <div className="mb-2 flex items-center justify-between">
@@ -47,6 +60,7 @@ export default function Skills() {
               ))}
             </div>
           </motion.div>
+          
         </div>
       </div>
     </section>
