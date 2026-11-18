@@ -30,7 +30,7 @@ export default function AdminLogin() {
             <Lock size={32} />
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-center text-slate-800 mb-2">Admin Portal</h2>
+        <h2 className="text-2xl font-bold text-center text-slate-800 mb-2">Admin Panel</h2>
         <p className="text-center text-slate-500 mb-8">Sign in to manage your portfolio</p>
 
         {error && (
